@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- App Sandbox (required for Mac App Store; optional for direct distribution) -->
+    <key>com.apple.security.app-sandbox</key>
+    <true/>
+
+    <!-- Microphone access – REQUIRED for AVAudioEngine input -->
+    <key>com.apple.security.device.microphone</key>
+    <true/>
+
+    <!-- Allows NSWorkspace.openApplication() to launch other apps -->
+    <key>com.apple.security.files.user-selected.read-only</key>
+    <true/>
+
+    <!--
+        If you later add the CGEvent key-press simulation (simulateKeyPress),
+        you'll also need the Accessibility entitlement, granted via
+        System Settings › Privacy & Security › Accessibility.
+        You do NOT need to add an entitlement key for that — macOS manages
+        Accessibility grants at the system level, not via .entitlements.
+    -->
+</dict>
+</plist>

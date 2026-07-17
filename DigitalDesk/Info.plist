@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- ─── Microphone permission (REQUIRED — app will crash without this) ─── -->
+    <key>NSMicrophoneUsageDescription</key>
+    <string>DeskSlap listens for loud transients on the built-in microphone to detect desk slaps and trigger actions based on the left or right channel amplitude.</string>
+
+    <!-- ─── Menu Bar / Background App ──────────────────────────────────────── -->
+    <!-- Hides the app from the Dock and prevents a main window from appearing. -->
+    <key>LSUIElement</key>
+    <true/>
+
+    <!-- ─── Minimum macOS version ───────────────────────────────────────────── -->
+    <key>LSMinimumSystemVersion</key>
+    <string>14.0</string>
+
+    <!-- ─── App metadata ────────────────────────────────────────────────────── -->
+    <key>CFBundleName</key>
+    <string>DeskSlap</string>
+
+    <key>CFBundleDisplayName</key>
+    <string>DeskSlap</string>
+
+    <key>CFBundleIdentifier</key>
+    <string>com.yourname.DeskSlap</string>
+
+    <key>CFBundleVersion</key>
+    <string>1</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+</dict>
+</plist>
