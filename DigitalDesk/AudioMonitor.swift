@@ -102,6 +102,17 @@ final class AudioMonitor: ObservableObject {
         let tapFormat = inputNode.outputFormat(forBus: 0)
 
         removeTapIfNeeded()
+        
+        // Disable Voice Processing to prevent macOS from downmixing to Mono
+        // and aggressively silencing our "desk slaps" using echo cancellation.
+        if #available(macOS 12.0, *) {
+            do {
+                try inputNode.setVoiceProcessingEnabled(false)
+            } catch {
+                print("Failed to disable Voice Processing: \(error)")
+            }
+        }
+        
         // NOTE: installTap(onBus:bufferSize:format:block:) was deprecated in macOS 27.
         // The closure-based API still functions correctly. The deprecation is a warning
         // only — it does not block the build or affect runtime behaviour.
@@ -158,6 +169,15 @@ final class AudioMonitor: ObservableObject {
         let rightRMS = numChannels >= 2
             ? rms(channelData[1], frameCount: frameCount)
             : leftRMS
+
+        // [DIAGNOSTIC LOGGING] Print RMS values every ~30 buffers to avoid console spam
+        DispatchQueue.main.async {
+            struct Counter { static var count = 0 }
+            Counter.count += 1
+            if Counter.count % 30 == 0 {
+                print("🎤 Mic Check | L: \(String(format: "%.4f", leftRMS)) | R: \(String(format: "%.4f", rightRMS)) | Channels: \(numChannels)")
+            }
+        }
 
         // Capture threshold locally (safe read – Float assignment is atomic on arm64)
         let threshold = sensitivityThreshold
