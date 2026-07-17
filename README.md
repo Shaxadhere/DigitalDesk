@@ -6,8 +6,6 @@ DeskSlap is an innovative macOS application that actively monitors audio to dete
 
 ![DeskSlap Screenshot](./screenshot.png)
 
-> **Note:** Make sure to place an image named `screenshot.png` in the root of the repository to display the app screenshot above.
-
 ## 🚀 Features
 
 - **Audio Monitoring**: Detects desk slaps reliably using your Mac's microphone.
