@@ -6,6 +6,13 @@ struct MainWindowView: View {
     @EnvironmentObject var audioMonitor: AudioMonitor
     @EnvironmentObject var actionHandler: ActionHandler
 
+    // Persistent User Preferences
+    @AppStorage("leftActionType") private var leftActionType: SlapActionType = .systemBeep
+    @AppStorage("leftActionParam") private var leftActionParam: String = ""
+    
+    @AppStorage("rightActionType") private var rightActionType: SlapActionType = .openCalculator
+    @AppStorage("rightActionParam") private var rightActionParam: String = ""
+
     // Per-side glow state
     @State private var leftGlowing  = false
     @State private var rightGlowing = false
@@ -28,7 +35,11 @@ struct MainWindowView: View {
             NSApp.activate(ignoringOtherApps: true)
             // Wire AudioMonitor → ActionHandler (single source of truth)
             audioMonitor.onSlapDetected = { event in
-                actionHandler.handle(event)
+                if event.side == .left {
+                    actionHandler.execute(side: .left, actionType: leftActionType, parameter: leftActionParam)
+                } else {
+                    actionHandler.execute(side: .right, actionType: rightActionType, parameter: rightActionParam)
+                }
             }
             audioMonitor.startListening()
         }
@@ -98,10 +109,9 @@ struct MainWindowView: View {
             // LEFT action box
             ActionBox(
                 side: "LEFT",
-                icon: "speaker.wave.2.fill",
-                actionName: "System Beep",
-                detail: "Plays a macOS\nsystem alert sound",
-                isGlowing: leftGlowing
+                isGlowing: leftGlowing,
+                actionType: $leftActionType,
+                parameter: $leftActionParam
             )
 
             Spacer()
@@ -118,10 +128,9 @@ struct MainWindowView: View {
             // RIGHT action box
             ActionBox(
                 side: "RIGHT",
-                icon: "desktopcomputer",
-                actionName: "Calculator",
-                detail: "Opens the macOS\nCalculator app",
-                isGlowing: rightGlowing
+                isGlowing: rightGlowing,
+                actionType: $rightActionType,
+                parameter: $rightActionParam
             )
         }
     }
